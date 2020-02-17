@@ -2,57 +2,52 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <bean id="security" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <property name="realm" ref="jdbcRealm"/>
-        <property name="realms">
-            <list>
-                <ref bean="jdbcRealm"/>
-                <ref bean="secondRealm"/>
-            </list>
-        </property>
-    </bean>
-
-
-    <bean id="jdbcRealm" class="com.yyc.utils.ShiroRealm">
-        <!--<property name="credentialsMatcher">
-            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-                <property name="hashAlgorithmName" value="MD5"/>
-                <property name="hashIterations" value="100"/>&lt;!&ndash;加密次数&ndash;&gt;
-            </bean>
-        </property>-->
-    </bean>
-
-    <bean id="secondRealm" class="com.yyc.utils.SecondRealm">
+    <!--realm验证授权的bean-->
+    <bean id="customRealm" class="com.community.realm.CustomRealm">
         <property name="credentialsMatcher">
             <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-                <property name="hashAlgorithmName" value="SAH1"/>
-                <property name="hashIterations" value="100"/><!--加密次数-->
+                <property name="hashAlgorithmName" value="MD5"/>
             </bean>
         </property>
     </bean>
 
-    <bean id="authority" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+
+
+    <bean id="rememberMe" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cookie">
+            <!--cookie-->
+            <bean  class="org.apache.shiro.web.servlet.SimpleCookie">
+                <property name="name" value="cookie"/>
+                <property name="maxAge" value="30"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realms">
+            <list>
+                <ref bean="customRealm"/>
+            </list>
+        </property>
+
+        <property name="rememberMeManager" ref="rememberMe"/>
     </bean>
 
     <bean id="lifeCycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
+
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-        <property name="securityManager" ref="security"/>
+        <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/login.jsp"/>
-        <property name="successUrl" value="/list.jsp"/>
         <property name="unauthorizedUrl" value="/error.jsp"/>
         <property name="filterChainDefinitions">
             <value>
-                /login.jsp = anon
                 /login = anon
+                /login.jsp = anon
                 /logout = logout
-                /user.jsp = roles[user]
-                /admin.jsp = roles[admin]
-                /welcome.html = anon
-                /** = authc
+                /static/** = anon
+
             </value>
         </property>
     </bean>
-
 </beans>
