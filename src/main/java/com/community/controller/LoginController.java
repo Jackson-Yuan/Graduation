@@ -1,7 +1,6 @@
 package com.community.controller;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
@@ -32,14 +31,17 @@ public class LoginController {
 
         if (!subject.isAuthenticated() && !subject.isRemembered()){
             try{
+                if (token.getPrincipal() == null) throw new NullPointerException();
                 subject.login(token);
-            }catch (AuthenticationException e){
-                model.addAttribute("error", e.getMessage());
+            }catch (NullPointerException e){
                 return "redirect:/login.jsp";
+            }catch (Exception e){
+                model.addAttribute("error", e.getMessage());
+                return "login";
             }
         }
 
-        return "index";
+        return "redirect:/index.jsp";
 
     }
 }
