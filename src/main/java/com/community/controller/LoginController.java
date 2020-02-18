@@ -1,18 +1,27 @@
 package com.community.controller;
 
+import com.community.entity.Article;
+import com.community.entity.Result;
+import com.community.service.ArticleService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * Created by yyc on 2020/2/17.
  */
 @Controller
 public class LoginController {
+    @Autowired
+    private ArticleService articleService;
 
     /**
     * @Description: 登录接口,安全验证
@@ -43,5 +52,19 @@ public class LoginController {
 
         return "redirect:/index.jsp";
 
+    }
+
+    /**
+    * @Description: 爬虫数据获取
+    * @Param: 
+    * @Return: 
+    * @Author: yyc
+    */
+    @RequestMapping("/health")
+    @ResponseBody
+    public Result<List<Article>> getHealthMessage(){
+        List<Article> articles = articleService.getHealthMessage();
+        if (articles == null) return new Result<>(null, "fail", "404");
+        else return new Result<>(articles, "success", "200");
     }
 }
