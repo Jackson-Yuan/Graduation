@@ -46,7 +46,7 @@
                 /login.jsp = anon
                 /logout = logout
                 /static/** = anon
-
+                /** = user
             </value>
         </property>
     </bean>
