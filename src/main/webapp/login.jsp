@@ -13,8 +13,8 @@
 </head>
 <body>
 <form method="post" action="login">
-    <input type="text" value="userName">
-    <input type="password" value="password">
+    <input type="text" name="userName">
+    <input type="password" name="password">
     <input type="submit" value="Submit">
 </form>
 <p id="error">${requestScope.error}</p>
