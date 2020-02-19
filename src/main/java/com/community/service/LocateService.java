@@ -1,8 +1,13 @@
 package com.community.service;
 
+import com.alibaba.fastjson.JSON;
+import com.community.entity.Location;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -11,13 +16,24 @@ import java.net.URLConnection;
  */
 @Service
 public class LocateService {
-    public static void main(String[] args) {
-        String url = "https://api.map.baidu.com/location/ip?ak=i15oSW9QVItzj7dMAXId6Nc1gnmxBn0o&ip=192.168.0.106&coor=bd09ll";
+    private static String url = "https://api.map.baidu.com/location/ip?ak=i15oSW9QVItzj7dMAXId6Nc1gnmxBn0o&coor=bd09ll";
+
+    public Location getLocation(String ipAddress) {
+        url = generateTargetUrl(ipAddress);
+        String json = generateJson();
+        if (json != null) return JSON.parseObject(json, Location.class);
+        else return null;
+    }
+
+    private String generateTargetUrl(String address){
+        if (address != null) url = url + "&ip=" + address;
+        return url;
+    }
+
+    private String generateJson(){
         BufferedReader br = null;
         InputStream in = null;
-        CharArrayWriter caw = null;
         InputStreamReader isr = null;
-
         try {
             URL realUrl = new URL(url);
             URLConnection connection = realUrl.openConnection();
@@ -26,27 +42,23 @@ public class LocateService {
             in = connection.getInputStream();
             isr = new InputStreamReader(in, "utf-8");
             br = new BufferedReader(isr);
-            caw = new CharArrayWriter();
-            char[] buffer = new char[1024];
-            int len;
-            while ((len = br.read(buffer)) != -1) {
-                caw.write(buffer, 0, len);
+            StringBuilder json = new StringBuilder();
+            String inputLine = null;
+            while ((inputLine = br.readLine()) != null) {
+                json.append(inputLine);
             }
-            StringBuilder target = new StringBuilder(caw.toString());
-            System.out.println(target);
 
+            return json.toString();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (br != null) try {
                 br.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            if (caw != null) caw.close();
         }
-
-
+        return null;
     }
+
 }
