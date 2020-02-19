@@ -109,8 +109,4 @@ public class ArticleService {
 
         return res;
     }
-
-    public static void main(String[] args) {
-        System.out.println(new ArticleService().getHealthMessage());
-    }
 }
