@@ -61,7 +61,7 @@ public class LoginController {
 
     /**
     * @Description: 爬虫数据获取
-    * @Param: 
+    * @Param:
     * @Return: 
     * @Author: yyc
     */
@@ -73,6 +73,12 @@ public class LoginController {
         else return new Result<>(articles, "success", "200");
     }
 
+    /**
+    * @Description: 获取位置信息
+    * @Param: ip地址
+    * @Return:
+    * @Author: yyc
+    */
     @RequestMapping("/address")
     @ResponseBody
     public Result<Location> getLocation(@RequestParam(value = "ipAddress", required = false)String ipAddress){
