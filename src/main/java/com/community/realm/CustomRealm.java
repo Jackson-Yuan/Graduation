@@ -1,5 +1,9 @@
 package com.community.realm;
 
+/**
+ * Created by yyc on 2020/2/17.
+ */
+
 import com.community.dao.UserMapper;
 import com.community.entity.User;
 import org.apache.shiro.authc.AuthenticationException;
@@ -13,15 +17,12 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Created by yyc on 2020/2/17.
- */
-/**
 * @Description: shiro中的Realm组件，进行授权，验证操作
 * @Param:
 * @Return:
 * @Author: yyc
 */
-public class CustomRealm extends AuthorizingRealm{
+public class CustomRealm extends AuthorizingRealm {
 
     @Autowired
     private UserMapper userMapper;

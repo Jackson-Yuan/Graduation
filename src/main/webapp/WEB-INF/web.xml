@@ -14,8 +14,8 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>
       classpath:spring/spring-base.xml;
-      classpath:spring/spring-shiro.xml;
-      classpath:spring/spring-dao.xml
+        classpath:spring/spring-dao.xml;
+        classpath:spring/spring-shiro.xml
     </param-value>
   </context-param>
 

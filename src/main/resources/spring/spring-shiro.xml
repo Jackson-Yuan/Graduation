@@ -10,8 +10,7 @@
             </bean>
         </property>
     </bean>
-
-
+    <bean id="directRealm" class="com.community.realm.DirectRealm"/>
 
     <bean id="rememberMe" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
         <property name="cookie">
@@ -27,26 +26,39 @@
         <property name="realms">
             <list>
                 <ref bean="customRealm"/>
+                <ref bean="directRealm"/>
             </list>
         </property>
-
         <property name="rememberMeManager" ref="rememberMe"/>
     </bean>
 
     <bean id="lifeCycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
+    <!--自定义拦截器-->
+    <bean id="weChatOfAuthentication" class="com.community.filter.WeChatOfAuthentication"/>
+    <bean id="weChatOfAuthority" class="com.community.filter.WeChatOfAuthority"/>
 
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
+        <property name="filters">
+            <map>
+                <entry key="weChatAuthc" value-ref="weChatOfAuthentication"/>
+                <entry key="weChatRole" value-ref="weChatOfAuthority"/>
+            </map>
+        </property>
         <property name="loginUrl" value="/login.jsp"/>
-        <property name="unauthorizedUrl" value="/error.jsp"/>
+        <property name="unauthorizedUrl" value="/authority"/>
         <property name="filterChainDefinitions">
             <value>
-                /login = anon
                 /login.jsp = anon
+                /getOpenId = anon
+                /validateUser = anon
+                /bindWeChat = anon
+                /registerByWeChat = anon
+                /weChatByLogin = anon
                 /logout = logout
                 /static/** = anon
-                /** = user
+                /** = weChatAuthc
             </value>
         </property>
     </bean>

@@ -16,6 +16,8 @@ public class Result<T> {
 
     private String code;
 
+    private boolean token;
+
     public Result() {
     }
 
@@ -23,6 +25,12 @@ public class Result<T> {
         this.data = data;
         this.message = message;
         this.code = code;
+    }
+
+    public Result(T data, String message, boolean token) {
+        this.data = data;
+        this.message = message;
+        this.token = token;
     }
 
     public T getData() {
@@ -49,12 +57,21 @@ public class Result<T> {
         this.code = code;
     }
 
+    public boolean isToken() {
+        return token;
+    }
+
+    public void setToken(boolean token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "Result{" +
                 "data=" + data +
                 ", message='" + message + '\'' +
                 ", code='" + code + '\'' +
+                ", token=" + token +
                 '}';
     }
 }
