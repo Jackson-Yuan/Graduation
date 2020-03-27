@@ -5,6 +5,7 @@
     <id column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="authority" jdbcType="VARCHAR" property="authority" />
+      <result column="open_id" jdbcType="VARCHAR" property="openId"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,7 +66,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    `user_id`, `password`, `authority`
+      `user_id`, `password`, `authority`, `open_id`
   </sql>
   <select id="selectByExample" parameterType="com.community.entity.example.UserExample" resultMap="BaseResultMap">
     select
@@ -98,10 +99,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.community.entity.User">
-    insert into user (`user_id`, `password`, `authority`
-      )
-    values (#{userId,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{authority,jdbcType=VARCHAR}
-      )
+      insert into user (`user_id`, `password`, `authority`,
+      `open_id`)
+      values (#{userId,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{authority,jdbcType=VARCHAR},
+      #{openId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.community.entity.User">
     insert into user
@@ -115,6 +116,9 @@
       <if test="authority != null">
         `authority`,
       </if>
+        <if test="openId != null">
+            `open_id`,
+        </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -126,6 +130,9 @@
       <if test="authority != null">
         #{authority,jdbcType=VARCHAR},
       </if>
+        <if test="openId != null">
+            #{openId,jdbcType=VARCHAR},
+        </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.community.entity.example.UserExample" resultType="java.lang.Long">
@@ -146,6 +153,9 @@
       <if test="record.authority != null">
         `authority` = #{record.authority,jdbcType=VARCHAR},
       </if>
+        <if test="record.openId != null">
+            `open_id` = #{record.openId,jdbcType=VARCHAR},
+        </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -155,7 +165,8 @@
     update user
     set `user_id` = #{record.userId,jdbcType=VARCHAR},
       `password` = #{record.password,jdbcType=VARCHAR},
-      `authority` = #{record.authority,jdbcType=VARCHAR}
+      `authority` = #{record.authority,jdbcType=VARCHAR},
+      `open_id` = #{record.openId,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -169,13 +180,17 @@
       <if test="authority != null">
         `authority` = #{authority,jdbcType=VARCHAR},
       </if>
+        <if test="openId != null">
+            `open_id` = #{openId,jdbcType=VARCHAR},
+        </if>
     </set>
     where `user_id` = #{userId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.community.entity.User">
     update user
     set `password` = #{password,jdbcType=VARCHAR},
-      `authority` = #{authority,jdbcType=VARCHAR}
+      `authority` = #{authority,jdbcType=VARCHAR},
+      `open_id` = #{openId,jdbcType=VARCHAR}
     where `user_id` = #{userId,jdbcType=VARCHAR}
   </update>
 </mapper>
