@@ -1,10 +1,8 @@
 package com.community.controller;
 
 import com.community.entity.Article;
-import com.community.entity.Location;
 import com.community.entity.Result;
 import com.community.service.ArticleService;
-import com.community.service.LocateService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -24,9 +22,6 @@ import java.util.List;
 public class LoginController {
     @Autowired
     private ArticleService articleService;
-
-    @Autowired
-    private LocateService locateService;
 
     /**
     * @Description: 登录接口,安全验证
@@ -73,18 +68,4 @@ public class LoginController {
         else return new Result<>(articles, "success", "200");
     }
 
-    /**
-    * @Description: 获取位置信息
-    * @Param: ip地址
-    * @Return:
-    * @Author: yyc
-    */
-    @RequestMapping("/address")
-    @ResponseBody
-    public Result<Location> getLocation(@RequestParam(value = "ipAddress", required = false)String ipAddress){
-        Location location = locateService.getLocation(ipAddress);
-
-        if (location == null) return new Result<>(null, "fail", "404");
-        else return new Result<>(location, "success", "200");
-    }
 }
