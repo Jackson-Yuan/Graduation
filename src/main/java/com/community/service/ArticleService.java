@@ -23,12 +23,16 @@ import java.util.regex.Pattern;
 */
 @Service
 public class ArticleService {
+    /**
+     * 目标网页
+     */
     private static final String prefix = "http://www.zhys.com";
-
+    /**目标爬取内容正则表达式*/
     private static final String targetRegex =  "<li><a href=\"/zixun/[0-9]*.html\" target=\"_blank\"  title=\"[\\u4e00-\\u9fa5，：“”,]{0,}\"><i><img src=\"[a-z://0-9.]*\" alt=\"[\\u4e00-\\u9fa5，：“”,]{0,}\"></i></a>" +
             "<h5><a href=\"/zixun/[0-9]*.html\" title=\"[\\u4e00-\\u9fa5，：“”,]{0,}\"  target=\"_blank\">[\\u4e00-\\u9fa5，：“”,]{0,}</a></h5>" +
             "<span><b>[0-9]{4}-[0-9]{0,2}-[0-9]{0,2}</b>[\\u4e00-\\u9fa5，：“”,]{0,}</span></li>";
 
+    /**对爬取的内容在利用三个正则表达式，拆分出标题，图片地址，文章地址*/
     private static final String titleRegex = "title=\"[\\u4e00-\\u9fa5，：“”,]{0,}\"";
 
     private static final String imageUrlRegex =  "src=\"[a-z:/0-9.]*\"";
@@ -44,6 +48,7 @@ public class ArticleService {
         InputStreamReader isr = null;
 
         try {
+            /**获取连接*/
             URL realUrl = new URL(url);
             URLConnection connection = realUrl.openConnection();
             connection.connect();
@@ -57,8 +62,9 @@ public class ArticleService {
             while ((len = br.read(buffer)) != -1) {
                 caw.write(buffer, 0, len);
             }
+            /**读入内容转为string对象*/
             StringBuilder target = new StringBuilder(caw.toString());
-
+            /**利用正则匹配，返回新闻对象的数组*/
             return getArticles(targetRegex, target);
         } catch (IOException e) {
             e.printStackTrace();

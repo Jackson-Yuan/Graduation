@@ -68,16 +68,20 @@ public class WeChatController {
     @RequestMapping("/weChatByLogin")
     @ResponseBody
     public Result<String> login(@RequestParam String userId, @RequestParam String password) {
+        /**获取用户名密码，封装成一个凭证*/
         UsernamePasswordToken token = new UsernamePasswordToken(userId, password);
+        /**获取当前Subject实例*/
         Subject subject = SecurityUtils.getSubject();
+        /**判断是否认证*/
         if (!subject.isAuthenticated()) {
             try {
+                /**若没认证，则调用相关方法进行认证*/
                 subject.login(token);
             } catch (AuthenticationException e) {
                 return new Result<>("认证失败，请联系社区管理员或重新登录", "fail", false);
             }
         }
-        return new Result<>("身份已被系统认证", "success", true);
+        return new Result<>("身份已认证", "success", true);
     }
 
 }

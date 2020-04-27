@@ -29,6 +29,9 @@
                 <ref bean="directRealm"/>
             </list>
         </property>
+        <property name="sessionManager">
+            <bean class="com.community.filter.CustomSessionManager"/>
+        </property>
         <property name="rememberMeManager" ref="rememberMe"/>
     </bean>
 
@@ -50,14 +53,18 @@
         <property name="unauthorizedUrl" value="/authority"/>
         <property name="filterChainDefinitions">
             <value>
-                /login.jsp = anon
                 /getOpenId = anon
                 /validateUser = anon
                 /bindWeChat = anon
                 /registerByWeChat = anon
                 /weChatByLogin = anon
-                /logout = logout
+                /health = anon
                 /static/** = anon
+                /logout = logout
+                /activity/show = weChatRole[admin,older]
+                /feedback/show = weChatRole[admin, super_admin, older, family]
+                /data/show = weChatRole[family, admin]
+                /location/show = weChatRole[family,admin]
                 /** = weChatAuthc
             </value>
         </property>
