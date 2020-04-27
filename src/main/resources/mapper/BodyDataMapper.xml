@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.community.dao.BodyDataMapper">
+    <resultMap id="BaseResultMap" type="com.community.entity.data.BodyData">
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="device_id" jdbcType="VARCHAR" property="deviceId"/>
+        <result column="blood_pressure" jdbcType="DOUBLE" property="bloodPressure"/>
+        <result column="heart_rate" jdbcType="DOUBLE" property="heartRate"/>
+        <result column="temperature" jdbcType="DOUBLE" property="temperature"/>
+        <result column="upload_date" jdbcType="TIMESTAMP" property="uploadDate"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        `user_id`, `device_id`, `blood_pressure`, `heart_rate`, `temperature`, `upload_date`
+    </sql>
+    <select id="selectByExample" parameterType="com.community.entity.example.BodyDataExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from body_data_detail
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deleteByExample" parameterType="com.community.entity.example.BodyDataExample">
+        delete from body_data_detail
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.community.entity.data.BodyData">
+        insert into body_data_detail (`user_id`, `device_id`, `blood_pressure`,
+        `heart_rate`, `temperature`, `upload_date`
+        )
+        values (#{userId,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, #{bloodPressure,jdbcType=DOUBLE},
+        #{heartRate,jdbcType=DOUBLE}, #{temperature,jdbcType=DOUBLE}, #{uploadDate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.community.entity.data.BodyData">
+        insert into body_data_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                `user_id`,
+            </if>
+            <if test="deviceId != null">
+                `device_id`,
+            </if>
+            <if test="bloodPressure != null">
+                `blood_pressure`,
+            </if>
+            <if test="heartRate != null">
+                `heart_rate`,
+            </if>
+            <if test="temperature != null">
+                `temperature`,
+            </if>
+            <if test="uploadDate != null">
+                `upload_date`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="bloodPressure != null">
+                #{bloodPressure,jdbcType=DOUBLE},
+            </if>
+            <if test="heartRate != null">
+                #{heartRate,jdbcType=DOUBLE},
+            </if>
+            <if test="temperature != null">
+                #{temperature,jdbcType=DOUBLE},
+            </if>
+            <if test="uploadDate != null">
+                #{uploadDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.community.entity.example.BodyDataExample"
+            resultType="java.lang.Long">
+        select count(*) from body_data_detail
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update body_data_detail
+        <set>
+            <if test="record.userId != null">
+                `user_id` = #{record.userId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.deviceId != null">
+                `device_id` = #{record.deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bloodPressure != null">
+                `blood_pressure` = #{record.bloodPressure,jdbcType=DOUBLE},
+            </if>
+            <if test="record.heartRate != null">
+                `heart_rate` = #{record.heartRate,jdbcType=DOUBLE},
+            </if>
+            <if test="record.temperature != null">
+                `temperature` = #{record.temperature,jdbcType=DOUBLE},
+            </if>
+            <if test="record.uploadDate != null">
+                `upload_date` = #{record.uploadDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update body_data_detail
+        set `user_id` = #{record.userId,jdbcType=VARCHAR},
+        `device_id` = #{record.deviceId,jdbcType=VARCHAR},
+        `blood_pressure` = #{record.bloodPressure,jdbcType=DOUBLE},
+        `heart_rate` = #{record.heartRate,jdbcType=DOUBLE},
+        `temperature` = #{record.temperature,jdbcType=DOUBLE},
+        `upload_date` = #{record.uploadDate,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+
+
+    <sql id="Page_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <select id="queryWithPage" resultMap="BaseResultMap">
+        select
+        <if test="example.distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from body_data_detail
+        <if test="_parameter != null">
+            <include refid="Page_Where_Clause"/>
+        </if>
+        <if test="example.orderByClause != null">
+            order by ${example.orderByClause}
+        </if>
+        LIMIT ${(page.page - 1) * page.record}, #{page.record}
+    </select>
+    <select id="queryWithHistory" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        `user_id`, `device_id`, AVG(`blood_pressure`) AS blood_pressure, AVG(`heart_rate`) AS heart_rate,
+        AVG(`temperature`) AS temperature
+        from body_data_detail
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <insert id="insertBodyDataInfo">
+        INSERT INTO older_data(`device_id`, `blood_pressure`, `heart_rate`, `temperature`, `upload_date`) VALUES
+        (#{deviceId}, #{bloodPressure}, #{heartRate}, #{temperature}, #{uploadDate})
+    </insert>
+</mapper>

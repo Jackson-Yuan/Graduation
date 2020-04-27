@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.community.dao.MenuMapper">
+    <resultMap id="BaseResultMap" type="com.community.entity.Menu">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="breakfast" jdbcType="VARCHAR" property="breakfast"/>
+        <result column="lunch" jdbcType="VARCHAR" property="lunch"/>
+        <result column="dinner" jdbcType="VARCHAR" property="dinner"/>
+        <result column="date" jdbcType="TIMESTAMP" property="date"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        `id`, `breakfast`, `lunch`, `dinner`, `date`
+    </sql>
+    <select id="selectByExample" parameterType="com.community.entity.example.MenuExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from menu
+        where `id` = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from menu
+        where `id` = #{id,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.community.entity.example.MenuExample">
+        delete from menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.community.entity.Menu">
+        insert into menu (`id`, `breakfast`, `lunch`,
+        `dinner`, `date`)
+        values (#{id,jdbcType=VARCHAR}, #{breakfast,jdbcType=VARCHAR}, #{lunch,jdbcType=VARCHAR},
+        #{dinner,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.community.entity.Menu">
+        insert into menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                `id`,
+            </if>
+            <if test="breakfast != null">
+                `breakfast`,
+            </if>
+            <if test="lunch != null">
+                `lunch`,
+            </if>
+            <if test="dinner != null">
+                `dinner`,
+            </if>
+            <if test="date != null">
+                `date`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="breakfast != null">
+                #{breakfast,jdbcType=VARCHAR},
+            </if>
+            <if test="lunch != null">
+                #{lunch,jdbcType=VARCHAR},
+            </if>
+            <if test="dinner != null">
+                #{dinner,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.community.entity.example.MenuExample" resultType="java.lang.Long">
+        select count(*) from menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update menu
+        <set>
+            <if test="record.id != null">
+                `id` = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.breakfast != null">
+                `breakfast` = #{record.breakfast,jdbcType=VARCHAR},
+            </if>
+            <if test="record.lunch != null">
+                `lunch` = #{record.lunch,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dinner != null">
+                `dinner` = #{record.dinner,jdbcType=VARCHAR},
+            </if>
+            <if test="record.date != null">
+                `date` = #{record.date,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update menu
+        set `id` = #{record.id,jdbcType=VARCHAR},
+        `breakfast` = #{record.breakfast,jdbcType=VARCHAR},
+        `lunch` = #{record.lunch,jdbcType=VARCHAR},
+        `dinner` = #{record.dinner,jdbcType=VARCHAR},
+        `date` = #{record.date,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.community.entity.Menu">
+        update menu
+        <set>
+            <if test="breakfast != null">
+                `breakfast` = #{breakfast,jdbcType=VARCHAR},
+            </if>
+            <if test="lunch != null">
+                `lunch` = #{lunch,jdbcType=VARCHAR},
+            </if>
+            <if test="dinner != null">
+                `dinner` = #{dinner,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                `date` = #{date,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where `id` = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.community.entity.Menu">
+        update menu
+        set `breakfast` = #{breakfast,jdbcType=VARCHAR},
+        `lunch` = #{lunch,jdbcType=VARCHAR},
+        `dinner` = #{dinner,jdbcType=VARCHAR},
+        `date` = #{date,jdbcType=TIMESTAMP}
+        where `id` = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="validateMenuByReservation" resultType="java.lang.String">
+        SELECT `content` FROM reservation WHERE `user_id` = #{userId} AND `menu_id` = #{menuId}
+    </select>
+
+    <delete id="deleteReservation">
+        DELETE FROM reservation WHERE `user_id` = #{userId} AND `menu_id` = #{menuId}
+    </delete>
+
+    <insert id="insertReservation">
+        insert into reservation (`user_id`, `menu_id`, `content`) values (#{userId}, #{menuId}, #{content})
+    </insert>
+</mapper>

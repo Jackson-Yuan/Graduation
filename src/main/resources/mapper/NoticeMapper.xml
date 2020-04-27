@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.community.dao.NoticeMapper">
+    <resultMap id="BaseResultMap" type="com.community.entity.Notice">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="latitude" jdbcType="VARCHAR" property="latitude"/>
+        <result column="longitude" jdbcType="VARCHAR" property="longitude"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.community.entity.Notice">
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        `id`, `user_id`, `title`, `start_date`, `end_date`, `address`, `latitude`, `longitude`
+    </sql>
+    <sql id="Blob_Column_List">
+        `content`
+    </sql>
+    <select id="selectByExampleWithBLOBs" parameterType="com.community.entity.example.NoticeExample"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from notice
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" parameterType="com.community.entity.example.NoticeExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from notice
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from notice
+        where `id` = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from notice
+        where `id` = #{id,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.community.entity.example.NoticeExample">
+        delete from notice
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.community.entity.Notice">
+        insert into notice (`id`, `user_id`, `title`,
+        `start_date`, `end_date`, `address`,
+        `latitude`, `longitude`, `content`
+        )
+        values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+        #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{address,jdbcType=VARCHAR},
+        #{latitude,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.community.entity.Notice">
+        insert into notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                `id`,
+            </if>
+            <if test="userId != null">
+                `user_id`,
+            </if>
+            <if test="title != null">
+                `title`,
+            </if>
+            <if test="startDate != null">
+                `start_date`,
+            </if>
+            <if test="endDate != null">
+                `end_date`,
+            </if>
+            <if test="address != null">
+                `address`,
+            </if>
+            <if test="latitude != null">
+                `latitude`,
+            </if>
+            <if test="longitude != null">
+                `longitude`,
+            </if>
+            <if test="content != null">
+                `content`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="startDate != null">
+                #{startDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endDate != null">
+                #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="latitude != null">
+                #{latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude != null">
+                #{longitude,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.community.entity.example.NoticeExample" resultType="java.lang.Long">
+        select count(*) from notice
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update notice
+        <set>
+            <if test="record.id != null">
+                `id` = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userId != null">
+                `user_id` = #{record.userId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.title != null">
+                `title` = #{record.title,jdbcType=VARCHAR},
+            </if>
+            <if test="record.startDate != null">
+                `start_date` = #{record.startDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.endDate != null">
+                `end_date` = #{record.endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.address != null">
+                `address` = #{record.address,jdbcType=VARCHAR},
+            </if>
+            <if test="record.latitude != null">
+                `latitude` = #{record.latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="record.longitude != null">
+                `longitude` = #{record.longitude,jdbcType=VARCHAR},
+            </if>
+            <if test="record.content != null">
+                `content` = #{record.content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update notice
+        set `id` = #{record.id,jdbcType=VARCHAR},
+        `user_id` = #{record.userId,jdbcType=VARCHAR},
+        `title` = #{record.title,jdbcType=VARCHAR},
+        `start_date` = #{record.startDate,jdbcType=TIMESTAMP},
+        `end_date` = #{record.endDate,jdbcType=TIMESTAMP},
+        `address` = #{record.address,jdbcType=VARCHAR},
+        `latitude` = #{record.latitude,jdbcType=VARCHAR},
+        `longitude` = #{record.longitude,jdbcType=VARCHAR},
+        `content` = #{record.content,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update notice
+        set `id` = #{record.id,jdbcType=VARCHAR},
+        `user_id` = #{record.userId,jdbcType=VARCHAR},
+        `title` = #{record.title,jdbcType=VARCHAR},
+        `start_date` = #{record.startDate,jdbcType=TIMESTAMP},
+        `end_date` = #{record.endDate,jdbcType=TIMESTAMP},
+        `address` = #{record.address,jdbcType=VARCHAR},
+        `latitude` = #{record.latitude,jdbcType=VARCHAR},
+        `longitude` = #{record.longitude,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.community.entity.Notice">
+        update notice
+        <set>
+            <if test="userId != null">
+                `user_id` = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                `title` = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="startDate != null">
+                `start_date` = #{startDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endDate != null">
+                `end_date` = #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="address != null">
+                `address` = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="latitude != null">
+                `latitude` = #{latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude != null">
+                `longitude` = #{longitude,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                `content` = #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where `id` = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.community.entity.Notice">
+        update notice
+        set `user_id` = #{userId,jdbcType=VARCHAR},
+        `title` = #{title,jdbcType=VARCHAR},
+        `start_date` = #{startDate,jdbcType=TIMESTAMP},
+        `end_date` = #{endDate,jdbcType=TIMESTAMP},
+        `address` = #{address,jdbcType=VARCHAR},
+        `latitude` = #{latitude,jdbcType=VARCHAR},
+        `longitude` = #{longitude,jdbcType=VARCHAR},
+        `content` = #{content,jdbcType=LONGVARCHAR}
+        where `id` = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.community.entity.Notice">
+        update notice
+        set `user_id` = #{userId,jdbcType=VARCHAR},
+        `title` = #{title,jdbcType=VARCHAR},
+        `start_date` = #{startDate,jdbcType=TIMESTAMP},
+        `end_date` = #{endDate,jdbcType=TIMESTAMP},
+        `address` = #{address,jdbcType=VARCHAR},
+        `latitude` = #{latitude,jdbcType=VARCHAR},
+        `longitude` = #{longitude,jdbcType=VARCHAR}
+        where `id` = #{id,jdbcType=VARCHAR}
+    </update>
+
+
+    <sql id="Page_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <select id="selectByExampleWithPage" resultMap="BaseResultMap">
+        select
+        <if test="example.distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from notice
+        <if test="_parameter != null">
+            <include refid="Page_Where_Clause"/>
+        </if>
+        <if test="example.orderByClause != null">
+            order by ${example.orderByClause}
+        </if>
+        LIMIT ${(page.page - 1) * page.record}, #{page.record}
+    </select>
+    <select id="selectByExampleAndParticipantWithPage" resultMap="BaseResultMap">
+        select
+        <if test="example.distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        FROM all_activity_participant
+        <if test="_parameter != null">
+            <include refid="Page_Where_Clause"/>
+        </if>
+        <if test="example.orderByClause != null">
+            order by ${example.orderByClause}
+        </if>
+        LIMIT ${(page.page - 1) * page.record}, #{page.record}
+    </select>
+    <select id="getCountWithParticipant" parameterType="com.community.entity.example.NoticeExample"
+            resultType="integer">
+        select count(*)
+        from all_activity_participant
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="getCountWithNotice" parameterType="com.community.entity.example.NoticeExample" resultType="integer">
+        select count(*)
+        from notice
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <insert id="insertParticipant">
+        INSERT INTO acticity_participant(`notice_id`, `user_id`) VALUES (#{noticeId,jdbcType=VARCHAR},
+        #{userId,jdbcType=VARCHAR})
+    </insert>
+    <delete id="deleteWithParticipant">
+        DELETE FROM acticity_participant WHERE `notice_id` = #{noticeId, jdbcType=VARCHAR} AND `user_id` =
+        #{userId,jdbcType=VARCHAR}
+    </delete>
+
+</mapper>

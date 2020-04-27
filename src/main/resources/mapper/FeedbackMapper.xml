@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.community.dao.FeedbackMapper">
+    <resultMap id="BaseResultMap" type="com.community.entity.Feedback">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="contact" jdbcType="VARCHAR" property="contact"/>
+        <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl"/>
+        <result column="date" jdbcType="TIMESTAMP" property="date"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.community.entity.Feedback">
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        `id`, `user_id`, `type`, `contact`, `picture_url`, `date`
+    </sql>
+    <sql id="Blob_Column_List">
+        `content`
+    </sql>
+    <select id="selectByExampleWithBLOBs" parameterType="com.community.entity.example.FeedbackExample"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from feedback
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" parameterType="com.community.entity.example.FeedbackExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from feedback
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from feedback
+        where `id` = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from feedback
+        where `id` = #{id,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.community.entity.example.FeedbackExample">
+        delete from feedback
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.community.entity.Feedback">
+        insert into feedback (`id`, `user_id`, `type`,
+        `contact`, `picture_url`, `date`,
+        `content`)
+        values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
+        #{contact,jdbcType=VARCHAR}, #{pictureUrl,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP},
+        #{content,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.community.entity.Feedback">
+        insert into feedback
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                `id`,
+            </if>
+            <if test="userId != null">
+                `user_id`,
+            </if>
+            <if test="type != null">
+                `type`,
+            </if>
+            <if test="contact != null">
+                `contact`,
+            </if>
+            <if test="pictureUrl != null">
+                `picture_url`,
+            </if>
+            <if test="date != null">
+                `date`,
+            </if>
+            <if test="content != null">
+                `content`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="contact != null">
+                #{contact,jdbcType=VARCHAR},
+            </if>
+            <if test="pictureUrl != null">
+                #{pictureUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.community.entity.example.FeedbackExample" resultType="integer">
+        select count(*) from feedback
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update feedback
+        <set>
+            <if test="record.id != null">
+                `id` = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userId != null">
+                `user_id` = #{record.userId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.type != null">
+                `type` = #{record.type,jdbcType=INTEGER},
+            </if>
+            <if test="record.contact != null">
+                `contact` = #{record.contact,jdbcType=VARCHAR},
+            </if>
+            <if test="record.pictureUrl != null">
+                `picture_url` = #{record.pictureUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.date != null">
+                `date` = #{record.date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.content != null">
+                `content` = #{record.content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update feedback
+        set `id` = #{record.id,jdbcType=VARCHAR},
+        `user_id` = #{record.userId,jdbcType=VARCHAR},
+        `type` = #{record.type,jdbcType=INTEGER},
+        `contact` = #{record.contact,jdbcType=VARCHAR},
+        `picture_url` = #{record.pictureUrl,jdbcType=VARCHAR},
+        `date` = #{record.date,jdbcType=TIMESTAMP},
+        `content` = #{record.content,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update feedback
+        set `id` = #{record.id,jdbcType=VARCHAR},
+        `user_id` = #{record.userId,jdbcType=VARCHAR},
+        `type` = #{record.type,jdbcType=INTEGER},
+        `contact` = #{record.contact,jdbcType=VARCHAR},
+        `picture_url` = #{record.pictureUrl,jdbcType=VARCHAR},
+        `date` = #{record.date,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.community.entity.Feedback">
+        update feedback
+        <set>
+            <if test="userId != null">
+                `user_id` = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                `type` = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="contact != null">
+                `contact` = #{contact,jdbcType=VARCHAR},
+            </if>
+            <if test="pictureUrl != null">
+                `picture_url` = #{pictureUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                `date` = #{date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                `content` = #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where `id` = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.community.entity.Feedback">
+        update feedback
+        set `user_id` = #{userId,jdbcType=VARCHAR},
+        `type` = #{type,jdbcType=INTEGER},
+        `contact` = #{contact,jdbcType=VARCHAR},
+        `picture_url` = #{pictureUrl,jdbcType=VARCHAR},
+        `date` = #{date,jdbcType=TIMESTAMP},
+        `content` = #{content,jdbcType=LONGVARCHAR}
+        where `id` = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.community.entity.Feedback">
+        update feedback
+        set `user_id` = #{userId,jdbcType=VARCHAR},
+        `type` = #{type,jdbcType=INTEGER},
+        `contact` = #{contact,jdbcType=VARCHAR},
+        `picture_url` = #{pictureUrl,jdbcType=VARCHAR},
+        `date` = #{date,jdbcType=TIMESTAMP}
+        where `id` = #{id,jdbcType=VARCHAR}
+    </update>
+
+
+    <select id="selectByPage" resultMap="ResultMapWithBLOBs">
+        select
+        <if test="example.distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from feedback
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+        <if test="example.orderByClause != null">
+            order by ${example.orderByClause}
+        </if>
+        LIMIT ${(page.page - 1) * page.record}, #{page.record}
+    </select>
+</mapper>
